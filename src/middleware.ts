@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Always allow auth pages
-  if (pathname === '/admin/login' || pathname === '/admin/signup' || pathname === '/signup' || pathname === '/login') {
+  if (pathname === '/admin/login' || pathname === '/login') {
     return NextResponse.next();
   }
 
@@ -38,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/signup'],
+  matcher: ['/admin/:path*'],
 };
