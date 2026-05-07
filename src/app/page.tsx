@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   keywords: 'exclusive insights, specialized content, deep dives, private publication, expert analysis, high-signal',
   authors: [{ name: 'NoBrakes Team' }],
   openGraph: {
-    title: 'Exclusive Insights & Analysis | NoBrakes',
+    title: 'Exclusive Insights | NoBrakes',
     description: 'A private, specialized publication providing deep, valuable content for a dedicated audience.',
     type: 'website',
     locale: 'en_US',
