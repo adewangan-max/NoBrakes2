@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://no-brakes2.vercel.app/',
+    canonical: 'https://nobrakes2.vercel.app/',
   },
 };
 
@@ -54,13 +54,13 @@ const structuredData = {
   '@type': 'Blog',
   name: 'NoBrakes',
   description: 'Specialized, high-signal content for a dedicated audience.',
-  url: 'https://no-brakes2.vercel.app/',
+  url: 'https://nobrakes2.vercel.app/',
   publisher: {
     '@type': 'Organization',
     name: 'NoBrakes',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://no-brakes2.vercel.app/',
+      url: 'https://nobrakes2.vercel.app/',
     },
   },
   sameAs: [
@@ -78,7 +78,7 @@ export default async function Home() {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt || post.content?.substring(0, 160),
-    url: `https://no-brakes2.vercel.app.com/post/${post.slug}`,
+    url: `https://nobrakes2.vercel.app.com/post/${post.slug}`,
     datePublished: post.published_at || post.created_at,
     dateModified: post.updated_at || post.published_at || post.created_at,
     author: {
