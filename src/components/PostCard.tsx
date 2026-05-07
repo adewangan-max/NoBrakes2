@@ -6,13 +6,15 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Post } from '@/types/database';
 import { cn, formatDate } from '@/lib/utils';
+import { LikeButton } from './LikeButton';
 
 interface PostCardProps {
   post: Post & { category?: { name: string; slug: string } };
   index?: number;
+  isLiked?: boolean;
 }
 
-export function PostCard({ post, index = 0 }: PostCardProps) {
+export function PostCard({ post, index = 0, isLiked = false }: PostCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -41,6 +43,9 @@ export function PostCard({ post, index = 0 }: PostCardProps) {
               </span>
             </div>
           )}
+          <div className="absolute top-4 right-4 z-10">
+            <LikeButton postId={post.id} initialLiked={isLiked} className="bg-black/20 backdrop-blur-md border-white/20" />
+          </div>
         </div>
 
         <div className="p-6">

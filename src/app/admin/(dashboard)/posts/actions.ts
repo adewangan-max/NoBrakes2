@@ -1,6 +1,6 @@
 'use server';
 
-import { createPost, CreatePostInput } from '@/services/postService';
+import { createPost, updatePost, incrementUpdateCount, CreatePostInput, UpdatePostInput } from '@/services/postService';
 import { getSession } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -37,11 +37,16 @@ export async function createPostAction(formData: Partial<CreatePostInput>) {
       meta_description: formData.meta_description || undefined,
       focus_keyword: formData.focus_keyword || undefined,
       canonical_url: formData.canonical_url || undefined,
-      author_id: session.userId, // ← inject from session
+      author_id: session.id, // ← inject from session
+      tags: formData.tags,
+      media: formData.media,
+      internalLinks: formData.internalLinks,
     });
 
     revalidatePath('/admin/posts');
     revalidatePath('/');
+    // revalidate created post page
+    if (post?.id && post?.slug) revalidatePath(`/post/${post.slug}+${post.id}`);
     return { success: true, post };
   } catch (error: any) {
     console.error('createPostAction error:', error);
@@ -56,34 +61,49 @@ export async function updatePostAction(postId: string, formData: Partial<CreateP
     return { success: false, error: 'Unauthorized to edit posts.' };
   }
 
-  const { supabase } = await import('@/lib/supabase');
+  try {
+    const post = await updatePost({
+      id: postId,
+      ...formData,
+    });
 
-  const payload = {
-    ...(formData.title && { title: formData.title }),
-    ...(formData.slug && { slug: formData.slug }),
-    ...(formData.content !== undefined && { content: formData.content }),
-    ...(formData.excerpt !== undefined && { excerpt: formData.excerpt }),
-    ...(formData.status && { status: formData.status }),
-    ...(formData.category_id !== undefined && { category_id: formData.category_id || null }),
-    ...(formData.featured_image !== undefined && { featured_image: formData.featured_image || null }),
-    ...(formData.featured_image_alt !== undefined && { featured_image_alt: formData.featured_image_alt || null }),
-    ...(formData.meta_title !== undefined && { meta_title: formData.meta_title || null }),
-    ...(formData.meta_description !== undefined && { meta_description: formData.meta_description || null }),
-    ...(formData.focus_keyword !== undefined && { focus_keyword: formData.focus_keyword || null }),
-    ...(formData.canonical_url !== undefined && { canonical_url: formData.canonical_url || null }),
-    published_at:
-      formData.status === 'published' ? new Date().toISOString() : undefined,
-    updated_at: new Date().toISOString(),
-  };
-
-  const { error } = await supabase.from('posts').update(payload).eq('id', postId);
-
-  if (error) {
+    revalidatePath('/admin/posts');
+    revalidatePath(`/post/${post.slug}+${post.id}`);
+    revalidatePath('/');
+    return { success: true, post };
+  } catch (error: any) {
     console.error('updatePostAction error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: error.message ?? 'Failed to update post.' };
+  }
+}
+
+export async function incrementUpdateAction(postId: string, formData: Partial<CreatePostInput>) {
+  const session = await getSession();
+  if (!session) redirect('/login');
+  
+  // Strict check for editor role as requested
+  if (session.role !== 'editor') {
+    return { success: false, error: 'Only editors can perform this update.' };
   }
 
-  revalidatePath('/admin/posts');
-  revalidatePath('/');
-  return { success: true };
+  try {
+    // 1. Update the post data
+    await updatePost({
+      id: postId,
+      ...formData,
+    });
+
+    // 2. Increment the update count
+    const post = await incrementUpdateCount(postId);
+
+    revalidatePath('/admin/posts');
+    revalidatePath('/admin/update-post');
+    revalidatePath(`/post/${post.slug}+${post.id}`);
+    revalidatePath('/');
+    
+    return { success: true, post };
+  } catch (error: any) {
+    console.error('incrementUpdateAction error:', error);
+    return { success: false, error: error.message ?? 'Failed to update post.' };
+  }
 }

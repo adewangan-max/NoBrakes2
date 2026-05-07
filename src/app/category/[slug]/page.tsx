@@ -33,7 +33,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-16 text-center max-w-2xl mx-auto">
-        <h1 className="text-5xl font-black text-white mb-6 font-outfit">
+        <h1 className="text-5xl font-black text-white mb-6">
           Topic: <span className="text-gradient">{category?.name || slug}</span>
         </h1>
         {category?.description && (

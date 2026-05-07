@@ -1,13 +1,13 @@
 'use client';
 
 import { useActionState } from 'react';
-import { loginAction, LoginState } from '../admin/auth-actions';
-import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { viewerLoginAction, LoginState } from './auth-actions';
+import { Lock, Mail, Eye, EyeOff, User } from 'lucide-react';
 import { useState } from 'react';
 
 export default function LoginPage() {
   const [state, formAction, pending] = useActionState<LoginState, FormData>(
-    loginAction,
+    viewerLoginAction,
     undefined
   );
   const [showPassword, setShowPassword] = useState(false);
@@ -31,10 +31,10 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 shadow-2xl shadow-indigo-500/30">
             <Lock className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-black text-white font-outfit bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-            Editor Login
+          <h1 className="text-3xl font-black text-white font-quantico bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            Member Login
           </h1>
-          <p className="text-slate-500 text-sm mt-2">Sign in to manage posts</p>
+          <p className="text-slate-500 text-sm mt-2">Sign in to access exclusive content</p>
         </div>
 
         {/* Form */}

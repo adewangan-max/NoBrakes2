@@ -1,20 +1,15 @@
+// Authentication utilities for server-side use
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { supabase } from './supabase';
+import { SessionPayload } from '@/types/auth';
 
-const JWT_SECRET = new TextEncoder().encode(
+export const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'super-secret-fallback-key-change-in-production'
 );
 const SESSION_COOKIE = 'admin_session';
 const SESSION_DURATION = '7d';
 
-export interface SessionPayload {
-  userId: string;
-  email: string;
-  name: string;
-  role: 'admin' | 'editor' | 'viewer';
-  avatarUrl?: string;
-}
 
 /** Sign a JWT and store it as an HttpOnly cookie */
 export async function createSession(payload: SessionPayload) {
@@ -70,7 +65,36 @@ export async function loginUser(email: string, password: string): Promise<Sessio
   if (password !== user.password_hash) return null;
 
   return {
-    userId: user.id,
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role as SessionPayload['role'],
+    avatarUrl: user.avatar_url ?? undefined,
+  };
+}
+
+/** Signup a new user */
+export async function signupUser(name: string, email: string, password: string): Promise<SessionPayload | null> {
+  const { data: user, error } = await supabase
+    .from('users')
+    .insert([
+      {
+        name,
+        email,
+        password_hash: password, // Storing as plain text as per existing repo pattern
+        role: 'viewer'
+      }
+    ])
+    .select()
+    .single();
+
+  if (error || !user) {
+    console.error('Signup error:', error);
+    return null;
+  }
+
+  return {
+    id: user.id,
     email: user.email,
     name: user.name,
     role: user.role as SessionPayload['role'],

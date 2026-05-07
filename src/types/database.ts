@@ -97,3 +97,10 @@ export interface Redirect {
   status: RedirectStatus;
   created_at: string;
 }
+
+/** Matches public.post_likes */
+export interface PostLike {
+  user_id: string;
+  post_id: string;
+  created_at: string;
+}

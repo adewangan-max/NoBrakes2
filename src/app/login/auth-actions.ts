@@ -1,11 +1,11 @@
 'use server';
 
-import { loginUser, createSession, deleteSession, getSession } from '@/lib/auth';
+import { loginUser, createSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 export type LoginState = { error?: string } | undefined;
 
-export async function loginAction(
+export async function viewerLoginAction(
   _prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
@@ -23,15 +23,11 @@ export async function loginAction(
   }
 
   await createSession(session);
-  redirect('/admin');
-}
 
-
-export async function logoutAction() {
-  await deleteSession();
-  redirect('/');
-}
-
-export async function getSessionAction() {
-  return await getSession();
+  // Redirect based on role, but primarily for viewers to home
+  if (session.role === 'admin' || session.role === 'editor') {
+    redirect('/admin');
+  } else {
+    redirect('/');
+  }
 }

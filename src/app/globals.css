@@ -2,8 +2,10 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-quantico), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-quantico: var(--font-quantico);
+  --font-display: var(--font-quantico);
 }
 
 @layer base {
@@ -33,13 +35,18 @@
 @layer base {
   * {
     border-color: var(--border);
+    font-family: inherit;
   }
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    font-family: var(--font-sans);
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+  input, button, select, textarea {
+    font-family: inherit;
   }
 }
 
