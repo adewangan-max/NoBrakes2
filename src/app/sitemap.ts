@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nobrakes2.vercel.app';
 
   // Fetch all posts
   const { data: posts } = await supabase
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .select('slug, updated_at');
 
   const postUrls = (posts || []).map((post) => ({
-    url: `${baseUrl}/post/${post.slug}+${post.id}`,
+    url: `${baseUrl}/post/${post.slug}`,
     lastModified: new Date(post.updated_at),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
