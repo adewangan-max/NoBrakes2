@@ -143,13 +143,10 @@ export default async function Home() {
                   <div className="text-3xl font-bold text-white">{posts.length}+</div>
                   <div className="text-xs text-slate-500 uppercase tracking-wider">Articles</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">50K+</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider">Readers</div>
-                </div>
+
                 <div className="text-center">
                   <div className="text-3xl font-bold text-white">100+</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wider">Topics</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wider">Topics Upcomming</div>
                 </div>
               </div>
             </div>
