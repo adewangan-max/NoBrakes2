@@ -1,42 +1,65 @@
 import { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
 
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nobrakes2.vercel.app';
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nobrakes2.vercel.app';
+  // Ensure no trailing slash for consistency
+  const baseUrl = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
 
-  // Fetch all posts
-  const { data: posts } = await supabase
-    .from('posts')
-    .select('id, slug, updated_at')
-    .eq('status', 'published');
+  try {
+    // Fetch all published posts
+    const { data: posts, error: postsError } = await supabase
+      .from('posts')
+      .select('slug, updated_at')
+      .eq('status', 'published')
+      .order('updated_at', { ascending: false });
 
-  // Fetch all categories
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('slug, updated_at');
+    if (postsError) throw postsError;
 
-  const postUrls = (posts || []).map((post) => ({
-    url: `${baseUrl}/post/${post.slug}`,
-    lastModified: new Date(post.updated_at),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
+    // Fetch all categories
+    const { data: categories, error: catsError } = await supabase
+      .from('categories')
+      .select('slug, updated_at')
+      .order('updated_at', { ascending: false });
 
-  const categoryUrls = (categories || []).map((cat) => ({
-    url: `${baseUrl}/category/${cat.slug}`,
-    lastModified: new Date(cat.updated_at),
-    changeFrequency: 'monthly' as const,
-    priority: 0.5,
-  }));
+    if (catsError) throw catsError;
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    ...postUrls,
-    ...categoryUrls,
-  ];
+    const postUrls = (posts || []).map((post) => ({
+      url: `${baseUrl}/post/${post.slug}`,
+      lastModified: post.updated_at ? new Date(post.updated_at).toISOString() : new Date().toISOString(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
+
+    const categoryUrls = (categories || []).map((cat) => ({
+      url: `${baseUrl}/category/${cat.slug}`,
+      lastModified: cat.updated_at ? new Date(cat.updated_at).toISOString() : new Date().toISOString(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    }));
+
+    return [
+      {
+        url: baseUrl,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'daily' as const,
+        priority: 1,
+      },
+      ...postUrls,
+      ...categoryUrls,
+    ];
+  } catch (error) {
+    console.error('Sitemap generation error:', error);
+    // Fallback to at least the home page if DB fails
+    return [
+      {
+        url: baseUrl,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'daily' as const,
+        priority: 1,
+      },
+    ];
+  }
 }
