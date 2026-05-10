@@ -267,6 +267,7 @@ export default async function Home() {
           <div className="text-center text-xs text-slate-600 border-t border-white/5 pt-8">
             <p>
               © {new Date().getFullYear()} NoBrakes. All rights reserved.
+              {' '}<a href="/sitemap.xml" className="hover:text-indigo-400 transition-colors">Sitemap</a>
               {' '}|{' '}<a href="/privacy" className="hover:text-indigo-400 transition-colors">Privacy Policy</a>
             </p>
           </div>

@@ -70,6 +70,7 @@ export default function RootLayout({
                   <ul className="space-y-2">
                     <li><a href="#" className="text-slate-400 hover:text-indigo-400 text-sm transition-colors">Privacy Policy</a></li>
                     <li><a href="#" className="text-slate-400 hover:text-indigo-400 text-sm transition-colors">Terms of Service</a></li>
+                    <li><a href="/sitemap.xml" className="text-slate-400 hover:text-indigo-400 text-sm transition-colors">Sitemap</a></li>
                   </ul>
                 </div>
                 <div>

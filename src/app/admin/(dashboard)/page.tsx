@@ -245,6 +245,17 @@ export default function AdminDashboard() {
                   </div>
                   <span className="text-sm font-bold text-white">All Posts</span>
                 </Link>
+                <a
+                  href="/sitemap.xml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/30 text-center transition-all duration-300 hover:scale-105"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-3 group-hover:bg-white/10 transition-all">
+                    <Globe className="w-6 h-6 text-slate-400 group-hover:text-emerald-400 transition-colors" />
+                  </div>
+                  <span className="text-sm font-bold text-white">Sitemap</span>
+                </a>
               </div>
             </div>
 
