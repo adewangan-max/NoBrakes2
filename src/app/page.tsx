@@ -244,23 +244,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Categories Section */}
-        <section className="container mx-auto px-6 py-16 max-w-7xl">
-          <h2 className="text-2xl font-bold text-white text-center mb-8 font-quantico">
-            Explore by Category
-          </h2>
-          <div className="flex flex-wrap justify-center gap-3 font-quantico">
-            {['Deep Dives', 'Strategy', 'Case Studies', 'Analysis', 'Insights', 'Reports'].map((category) => (
-              <a
-                key={category}
-                href={`/category/${category.toLowerCase().replace(' ', '-')}`}
-                className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:bg-indigo-500/20 hover:border-indigo-500/30 hover:text-indigo-400 transition-all duration-300 text-sm font-medium"
-              >
-                {category}
-              </a>
-            ))}
-          </div>
-        </section>
 
         {/* SEO Footer Note */}
         <div className="container mx-auto px-6 pb-16 max-w-7xl">

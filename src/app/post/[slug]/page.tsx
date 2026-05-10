@@ -117,12 +117,9 @@ export default async function PostPage({ params }: PostPageProps) {
             {/* Header */}
             <header className="mb-12 text-center lg:text-left">
               {post.categories && (
-                <Link
-                  href={`/category/${post.categories.slug}`}
-                  className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold mb-6 hover:from-indigo-500/20 hover:to-purple-500/20 transition-all duration-300"
-                >
+                <div className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold mb-6">
                   {post.categories.name}
-                </Link>
+                </div>
               )}
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">
@@ -198,14 +195,13 @@ export default async function PostPage({ params }: PostPageProps) {
                 </h3>
                 <div className="flex flex-wrap gap-3">
                   {post.post_tags.map((pt: any) => (
-                    <Link
+                    <div
                       key={pt.tags.id}
-                      href={`/tag/${pt.tags.slug}`}
-                      className="flex items-center gap-1 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-indigo-500/20 hover:border-indigo-500/30 transition-all duration-300 text-sm group"
+                      className="flex items-center gap-1 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 text-sm group"
                     >
                       <Hash size={12} className="group-hover:rotate-12 transition-transform" />
                       {pt.tags.name}
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>
