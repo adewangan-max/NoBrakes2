@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   // Protect all /admin/* routes
   if (pathname.startsWith('/admin')) {
     const sessionToken = request.cookies.get('admin_session')?.value;
-    
+
     if (!sessionToken) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }

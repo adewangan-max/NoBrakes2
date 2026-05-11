@@ -46,6 +46,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://nobrakes2.vercel.app/',
   },
+  verification: {
+    google: 'Rm12BTcEPo_XFRifCwXK5ECvra8kvJEIadqw0Zv4sLs',
+  },
 };
 
 // Structured Data for Blog
