@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { supabase } from '@/lib/supabase';
 import { getSessionAction } from '../../auth-actions';
 import Link from 'next/link';
-import { Plus, Edit, Eye, Trash2, Search, Sparkles, Filter, ArrowUpDown, Calendar, Clock, CheckCircle, Archive, X } from 'lucide-react';
+import { Plus, Edit, Eye, Trash2, Search, Sparkles, Filter, ArrowUpDown, Calendar, Clock, CheckCircle, Archive, X, Send } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { useRouter } from "next/navigation";
+import { publishPostAction } from "./actions";
 
 export const dynamic = 'force-dynamic';
 
@@ -61,13 +62,33 @@ export default function AdminPostsPage() {
     fetchSessionAndPosts();
   }, [router]);
 
-  const isAdmin = session?.role === 'admin';
+  const isAdmin = session?.role === 'admin' || session?.role === 'editor';
 
   const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || post.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const handlePublish = async (postId: string) => {
+    if (!window.confirm("Are you sure you want to publish this post?")) return;
+    
+    try {
+      const result = await publishPostAction(postId);
+      if (result.success) {
+        setPosts(posts.map(p => 
+          p.id === postId 
+            ? { ...p, status: 'published', published_at: new Date().toISOString() } 
+            : p
+        ));
+      } else {
+        alert(result.error || "Failed to publish post");
+      }
+    } catch (error) {
+      console.error("Error publishing post:", error);
+      alert("An unexpected error occurred");
+    }
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -258,6 +279,15 @@ export default function AdminPostsPage() {
                             </Link>
                             {isAdmin && (
                               <>
+                                {post.status === 'draft' && (
+                                  <button
+                                    onClick={() => handlePublish(post.id)}
+                                    className="p-2.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-emerald-400 transition-all duration-200 group/btn"
+                                    title="Publish Now"
+                                  >
+                                    <Send className="w-4 h-4 group-hover/btn:scale-110 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                                  </button>
+                                )}
                                 <Link
                                   href={`/admin/posts/${post.id}/edit`}
                                   className="p-2.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-indigo-400 transition-all duration-200 group/btn"

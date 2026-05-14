@@ -107,3 +107,27 @@ export async function incrementUpdateAction(postId: string, formData: Partial<Cr
     return { success: false, error: error.message ?? 'Failed to update post.' };
   }
 }
+
+export async function publishPostAction(postId: string) {
+  const session = await getSession();
+  if (!session) redirect('/login');
+  if (session.role !== 'admin' && session.role !== 'editor') {
+    return { success: false, error: 'Unauthorized to publish posts.' };
+  }
+
+  try {
+    const post = await updatePost({
+      id: postId,
+      status: 'published',
+      published_at: new Date().toISOString()
+    });
+
+    revalidatePath('/admin/posts');
+    revalidatePath(`/post/${post.slug}+${post.id}`);
+    revalidatePath('/');
+    return { success: true, post };
+  } catch (error: any) {
+    console.error('publishPostAction error:', error);
+    return { success: false, error: error.message ?? 'Failed to publish post.' };
+  }
+}

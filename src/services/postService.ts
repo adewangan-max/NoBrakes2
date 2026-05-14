@@ -139,6 +139,7 @@ export interface CreatePostInput {
   content: string;
   excerpt?: string;
   status: PostStatus;
+  published_at?: string | null;
   category_id?: string;
   featured_image?: string;
   featured_image_alt?: string;
@@ -238,7 +239,7 @@ export const createPost = async (input: CreatePostInput) => {
     content_json: input.content_json ?? null,
     excerpt: input.excerpt ?? null,
     status: input.status,
-    published_at: input.status === 'published' ? new Date().toISOString() : null,
+    published_at: input.published_at ?? (input.status === 'published' ? new Date().toISOString() : null),
     author_id: input.author_id ?? null,
     category_id: input.category_id ?? automation.categoryId ?? null,
     meta_title: input.meta_title ?? null,
