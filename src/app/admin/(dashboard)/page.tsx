@@ -316,9 +316,12 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                       <div className="flex items-center gap-2 ml-4">
-                        <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <Link 
+                          href={`/admin/posts/${post.id}/edit`}
+                          className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                        >
                           <Edit size={16} className="text-slate-400 hover:text-indigo-400" />
-                        </button>
+                        </Link>
                         <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
                           <Trash2 size={16} className="text-slate-400 hover:text-red-400" />
                         </button>

@@ -9,7 +9,7 @@ import { RelatedPosts } from '@/components/RelatedPosts';
 import { ViewTracker } from '@/components/ViewTracker';
 import { ShareButtons } from '@/components/ShareButtons';
 import { formatDate } from '@/lib/utils';
-import { Calendar, Clock, User, Hash, ArrowLeft, Eye } from 'lucide-react';
+import { Calendar, Clock, User, Hash, ArrowLeft, Eye, Edit } from 'lucide-react';
 import { getSession } from '@/lib/auth';
 import { checkIfLiked } from '@/services/likeService';
 import { LikeButton } from '@/components/LikeButton';
@@ -67,6 +67,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   const session = await getSession();
   const isLiked = session ? await checkIfLiked(session.id, post.id) : false;
+  const isAdmin = session?.role === 'admin' || session?.role === 'editor';
 
   const readingTime = getReadingTime(post.content);
   const shareUrl = `https://yoursite.com/post/${post.slug}`;
@@ -148,11 +149,21 @@ export default async function PostPage({ params }: PostPageProps) {
                   <Eye className="w-4 h-4 text-indigo-400" />
                   <span>{post.views || 0} views</span>
                 </div>
-                <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
                   <LikeButton postId={post.id} initialLiked={isLiked} showText />
+                  {isAdmin && (
+                    <Link
+                      href={`/admin/posts/${post.id}/edit`}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider hover:bg-indigo-500/20 transition-all"
+                    >
+                      <Edit size={14} />
+                      Edit Post
+                    </Link>
+                  )}
                 </div>
               </div>
             </header>
+
 
             {/* Featured Image */}
             {post.featured_image && (
