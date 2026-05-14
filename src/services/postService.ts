@@ -137,19 +137,19 @@ export interface CreatePostInput {
   title: string;
   slug: string;
   content: string;
-  excerpt?: string;
+  excerpt?: string | null;
   status: PostStatus;
   published_at?: string | null;
-  category_id?: string;
-  featured_image?: string;
-  featured_image_alt?: string;
-  meta_title?: string;
-  meta_description?: string;
-  focus_keyword?: string;
-  canonical_url?: string;
-  schema_json?: object;
-  content_json?: object;
-  author_id?: string;
+  category_id?: string | null;
+  featured_image?: string | null;
+  featured_image_alt?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  focus_keyword?: string | null;
+  canonical_url?: string | null;
+  schema_json?: object | null;
+  content_json?: object | null;
+  author_id?: string | null;
   // Optional relational data
   tags?: string[];
   media?: Array<{ url: string; type: MediaType; alt_text?: string; caption?: string }>;
@@ -228,7 +228,7 @@ export const createPost = async (input: CreatePostInput) => {
   const automation = await automationService.automatePost(
     input.title,
     input.content,
-    input.category_id
+    input.category_id ?? undefined
   );
 
   // 2. Build the post payload
