@@ -60,7 +60,7 @@ export function PostCard({ post, index = 0, isLiked = false }: PostCardProps) {
             </div>
           </div>
 
-          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold mb-2 text-indigo-400 transition-colors line-clamp-2">
             {post.title}
           </h3>
 

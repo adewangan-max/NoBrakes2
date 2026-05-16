@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { viewerLoginAction, LoginState } from './auth-actions';
-import { Lock, Mail, Eye, EyeOff, User } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 
 export default function LoginPage() {
@@ -13,40 +13,32 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-3xl" />
-        <div className="absolute top-10 right-10 w-[300px] h-[300px] bg-blue-600/5 rounded-full blur-3xl" />
-      </div>
-
-      {/* Grid pattern */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10 pointer-events-none" />
-
+    <div className="min-h-screen bg-white dark:bg-[#202124] flex items-center justify-center p-4 transition-colors duration-300">
       {/* Card */}
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 shadow-2xl shadow-indigo-500/30">
-            <Lock className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-blue-600 dark:bg-blue-500 mb-4 shadow-sm">
+            <Lock className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-3xl font-black text-white font-quantico bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             Member Login
           </h1>
-          <p className="text-slate-500 text-sm mt-2">Sign in to access exclusive content</p>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
+            Sign in to access exclusive content
+          </p>
         </div>
 
-        {/* Form */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+        {/* Form Card */}
+        <div className="bg-white dark:bg-[#2d2e32] rounded-xl border border-gray-200 dark:border-[#3c4043] p-6 shadow-sm">
           <form action={formAction} className="space-y-5">
             {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                Email Address
+              <label htmlFor="email" className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                Email address
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                 <input
                   id="email"
                   name="email"
@@ -54,18 +46,18 @@ export default function LoginPage() {
                   autoComplete="email"
                   required
                   placeholder="admin@example.com"
-                  className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all"
+                  className="w-full bg-white dark:bg-[#202124] border border-gray-300 dark:border-[#3c4043] rounded-lg py-2.5 pl-10 pr-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <label htmlFor="password" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <label htmlFor="password" className="text-xs font-medium text-gray-700 dark:text-gray-300">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                 <input
                   id="password"
                   name="password"
@@ -73,33 +65,35 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   required
                   placeholder="••••••••"
-                  className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-11 pr-12 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all"
+                  className="w-full bg-white dark:bg-[#202124] border border-gray-300 dark:border-[#3c4043] rounded-lg py-2.5 pl-10 pr-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            {/* Error */}
+            {/* Error Message */}
             {state?.error && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
                 {state.error}
               </div>
             )}
 
-            {/* Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={pending}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold transition-all shadow-lg shadow-indigo-500/30 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2 shadow-sm"
             >
               {pending ? (
                 <>
@@ -118,7 +112,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-slate-600 text-xs mt-6">
+          <p className="text-center text-gray-500 dark:text-gray-500 text-xs mt-6">
             Only authorized editors can access this panel.
           </p>
         </div>
